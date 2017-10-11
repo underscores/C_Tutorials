@@ -1,0 +1,71 @@
+swap:
+1) prev->next = temp->next;
+2) temp->next = prev->next->next;
+3) prev->next->next = temp;
+
+original list:
+
+
+				prev			temp     >      temp->next
+(1)		->		(2)		->		(3)		->		(4)		->		(5)		->		(6)		->		NULL
+
+swap(prev, temp):
+
+1) prev->next = temp->next
+
+                                                prev->next
+                prev            temp            temp->next
+(1)     ->      (2)     x       (3)     ->      (4)     ->      (5)     ->      (6)     ->      NULL  
+                 |                               |
+                 |-------------------------------|
+
+2) temp->next = prev->next->next;
+
+                                                prev->next      prev->next->next
+                prev            temp            temp->next
+(1)     ->      (2)     x       (3)     x      (4)     ->      (5)     ->      (6)     ->      NULL  
+                 |               |               |              |
+                 |-------------------------------|              |
+                                 |------------------------------|
+
+3) prev->next->next = temp;
+
+                                                prev->next      prev->next->next
+                prev            temp            temp->next
+(1)     ->      (2)     x       (3)     x      (4)     x      (5)     ->      (6)     ->      NULL  //original prev->next->next pointer is set to temp
+                 |               |               |              |
+                 |-------------------------------|              |
+                                 |------------------------------|
+                                 |--------------/
+                                 
+result:
+(1)     ->      (2)     ->      (4)     ->      (3)     ->      (5)     ->      (6)     ->      NULL
+
+if first pointer has to change: prev=NULL;
+
+
+first
+temp    >       temp->next 
+(1)     ->      (2)     ->      (3)     ->      (4)     ->      (5)     ->      (6)     ->     NULL
+swap(prev, temp):
+first = temp->next;
+
+temp             first
+                 temp->next
+(1)     ->      (2)     ->      (3)     ->      (4)     ->      (5)     ->      (6)     ->     NULL
+
+ 
+ 2) temp->next = temp->next->next;
+temp            first
+                            temp->next
+(1)     x       (2)     x     (3)     ->      (4)     ->      (5)     ->      (6)     ->     NULL  //I need something to achieve a link from (2) to (1) without destroying the head
+ |-----------------------------|
+  2) first->next = temp;
+temp            first
+                                temp->next
+(1)     x       (2)     x     (3)     ->      (4)     ->      (5)     ->      (6)     ->     NULL  
+ |------<--------/             |
+ |-------------->--------------|
+ 
+ result:
+ (2)    ->      (1)     ->    (3)     ->      (4)     ->...
